@@ -1,0 +1,8 @@
+- name: Install phpmyadmin
+  apt:
+    name: phpmyadmin
+    state: latest
+    update_cache: yes
+
+- include: nginx.yml
+- include: config.yml

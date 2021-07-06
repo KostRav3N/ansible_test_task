@@ -1,0 +1,18 @@
+server {
+    listen 80;
+    root /usr/share/;
+    index index.php index.html index.htm;
+
+    server_name localhost;
+
+    location ~ ^/phpmyadmin/(.+\.php)$ {
+        root /usr/share/;
+        include fastcgi_params;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME /usr/share/$fastcgi_script_name;
+        fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
+    }
+    location ~* ^/phpmyadmin/(.+\.(jpg|jpeg|gif|css|png|js|ico|html|xml|txt))$ {
+                   root /usr/share/;
+    }
+}

@@ -1,0 +1,5 @@
+ - name: install nginx and php
+   apt:
+    name: ['nginx','php','php-fpm']
+    state: latest
+    update_cache: yes
