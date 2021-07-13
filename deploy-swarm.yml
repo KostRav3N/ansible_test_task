@@ -1,0 +1,34 @@
+---
+- name: setup pre-requisites
+  hosts: swarm
+  roles:
+    - create_docker_user
+    - install_modules
+    - configure_hosts_file
+
+- name: create and copy public key to the nodes
+  become: yes
+  become_user: docker
+  hosts: swarm
+  roles:
+    - create_and_copy_keys
+
+- name: install docker
+  hosts: swarm
+  roles:
+    - install_docker
+
+- name: initialize docker swarm
+  hosts: first
+  become: yes
+  become_user: docker
+
+  roles:
+    - docker_swarm_init
+
+- name: add managers to the swarm
+  hosts: second
+  become: yes
+  become_user: docker
+  roles:
+    - docker_swarm_add_manager

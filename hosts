@@ -42,4 +42,14 @@
 
 #db-[99:101]-node.example.com
 
-192.168.1.38
+[swarm]
+node1 ansible_ssh_host=192.168.1.39
+node2 ansible_ssh_host=192.168.1.68
+node3 ansible_ssh_host=192.168.1.37
+
+[first]
+node1 ansible_ssh_host=192.168.1.39
+
+[second]
+node2 ansible_ssh_host=192.168.1.68
+node3 ansible_ssh_host=192.168.1.37

@@ -1,0 +1,6 @@
+---
+- name: Install Packages
+  apt: 
+    name: ['ntp','python3','tcpdump','wget','openssl','curl']
+    state: latest
+    update_cache: yes

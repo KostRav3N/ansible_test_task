@@ -1,0 +1,28 @@
+- name: Generate SSH keys
+  shell: ssh-keygen -b 2048 -f /home/docker/.ssh/id_rsa -t rsa -q -N ""
+  args:
+    creates: /home/docker/.ssh/id_rsa
+
+- name: fetch all public ssh keys
+  shell: cat ~/.ssh/id_rsa.pub
+  register: ssh_keys
+  tags:
+    - ssh
+
+- name: check keys
+  debug: msg="{{ ssh_keys.stdout }}"
+  tags:
+    - ssh
+
+- name: deploy keys on all servers
+  authorized_key: user=docker key="{{ item[0] }}"
+  delegate_to: "{{ item[1] }}"
+  with_nested:
+    - "{{ ssh_keys.stdout }}"
+    - "{{ groups['swarm'] }}"
+  tags:
+    - ssh
+
+- name: run ssh-keyscan to add keys to known_hosts
+  shell: "ssh-keyscan {{ item }} >> ~/.ssh/known_hosts"
+  with_items: "{{ groups['swarm'] }}"
